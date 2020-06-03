@@ -11,17 +11,17 @@ public class SwiftEsysFlutterSharePlugin: NSObject, FlutterPlugin {
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if(call.method == "text"){
-            self.text(arguments: call.arguments)
+            self.text(arguments: call.arguments, result: result)
         }
         if(call.method == "file"){
-            self.file(arguments: call.arguments)
+            self.file(arguments: call.arguments, result: result)
         }
         if(call.method == "files"){
-            self.files(arguments: call.arguments)
+            self.files(arguments: call.arguments, result: result)
         }
     }
     
-    func text(arguments:Any?) -> Void {
+    func text(arguments:Any?, result: @escaping FlutterResult) -> Void {
         // prepare method channel args
         // no use in ios
         //// let title:String = argsMap.value(forKey: "title") as! String
@@ -30,6 +30,20 @@ public class SwiftEsysFlutterSharePlugin: NSObject, FlutterPlugin {
         
         // set up activity view controller
         let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+
+        activityViewController.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
+            if let error = error {
+                result(FlutterError(code: String((error as NSError).code),
+                          message: (error as NSError).domain,
+                          details: error.localizedDescription))
+            } else if (completed) {
+                // user shared an item
+                result(0);
+            } else {
+                // user cancelled
+                result(-1);
+            }
+        }
         
         // present the view controller
         let controller = UIApplication.shared.keyWindow!.rootViewController as! FlutterViewController
@@ -38,7 +52,7 @@ public class SwiftEsysFlutterSharePlugin: NSObject, FlutterPlugin {
         controller.show(activityViewController, sender: self)
     }
     
-    func file(arguments:Any?) -> Void {
+    func file(arguments:Any?, result: @escaping FlutterResult) -> Void {
         // prepare method channel args
         // no use in ios
         //// let title:String = argsMap.value(forKey: "title") as! String
@@ -59,6 +73,20 @@ public class SwiftEsysFlutterSharePlugin: NSObject, FlutterPlugin {
         
         // set up activity view controller
         let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+
+        activityViewController.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
+            if let error = error {
+                result(FlutterError(code: String((error as NSError).code),
+                          message: (error as NSError).domain,
+                          details: error.localizedDescription))
+            } else if (completed) {
+                // user shared an item
+                result(0);
+            } else {
+                // user cancelled
+                result(-1);
+            }
+        }
         
         // present the view controller
         let controller = UIApplication.shared.keyWindow!.rootViewController as! FlutterViewController
@@ -67,7 +95,7 @@ public class SwiftEsysFlutterSharePlugin: NSObject, FlutterPlugin {
         controller.show(activityViewController, sender: self)
     }
     
-    func files(arguments:Any?) -> Void {
+    func files(arguments:Any?, result: @escaping FlutterResult) -> Void {
         // prepare method channel args
         // no use in ios
         //// let title:String = argsMap.value(forKey: "title") as! String
@@ -91,6 +119,20 @@ public class SwiftEsysFlutterSharePlugin: NSObject, FlutterPlugin {
         
         // set up activity view controller
         let activityViewController:UIActivityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+
+        activityViewController.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
+            if let error = error {
+                result(FlutterError(code: String((error as NSError).code),
+                          message: (error as NSError).domain,
+                          details: error.localizedDescription))
+            } else if (completed) {
+                // user shared an item
+                result(0);
+            } else {
+                // user cancelled
+                result(-1);
+            }
+        }
         
         // present the view controller
         let controller = UIApplication.shared.keyWindow!.rootViewController as! FlutterViewController
